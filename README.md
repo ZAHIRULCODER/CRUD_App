@@ -26,11 +26,11 @@ npm install
 ```bash
 npm run dev
 ```
-http://localhost:3000 in your browser to view the application
+http://localhost:3000 (backend) in your browser to view the application
 
 ### Start the frontend server in development mode
 ```bash
 npm run dev
 ```
-http://localhost:5173 in your browser to view the application
+http://localhost:5173 (frontend) in your browser to view the application
 
