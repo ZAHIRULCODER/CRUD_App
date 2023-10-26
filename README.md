@@ -6,9 +6,14 @@ These instructions will get you a copy of the project up and running on your loc
 
 ## Prerequisites & Built With
 - vite + React.js
+- Axios
+- React hot toast
+- React icons 
 - Node.js + Express.js
+- cors
+- nodemon
 - mongoose 
-- Axios 
+
 
 ### Installing 
 Clone the repository to your local machine
@@ -17,7 +22,7 @@ git clone https://github.com/ZAHIRULCODER/CRUD_App.git
 
 ```
 
-### Install all the dependencies
+### Install all the dependencies for the backend and frontend
 ```bash
 npm install
 ```
