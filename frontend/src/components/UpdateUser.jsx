@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import toast from "react-hot-toast";
@@ -9,31 +9,36 @@ const UpdateUser = () => {
 	const [phone, setPhone] = useState("");
 	const { id } = useParams();
 	const navigate = useNavigate();
-	const location = useLocation(); // Getting the props from Body component Link tag: state
+
+	useEffect(() => {
+		const fetchSingleUser = async () => {
+			try {
+				const response = await axios.get(`/api/v1/single-user/${id}`);
+				setName(response.data.user.name);
+				setEmail(response.data.user.email);
+				setPhone(response.data.user.phone);
+			} catch (error) {
+				console.log(error);
+				toast.error(error.response.data.message);
+			}
+		};
+		fetchSingleUser();
+	}, [id]);
 
 	const handleUserUpdate = async (e) => {
 		e.preventDefault();
-
 		try {
-			const response = await axios.put(
-				`/api/update-user/${id}`,
-				{
-					name,
-					email,
-					phone,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-					},
-					withCredentials: true,
-				}
-			);
+			const response = await axios.put(`/api/v1/update-user/${id}`, {
+				name,
+				email,
+				phone,
+			});
 
 			toast.success(response.data.message);
 			navigate("/");
 		} catch (error) {
-			toast.error(response.data.error.message);
+			console.log(error);
+			toast.error(error.response.data.message);
 		}
 	};
 
@@ -41,14 +46,9 @@ const UpdateUser = () => {
 		<form onSubmit={handleUserUpdate}>
 			<div className="min-h-screen flex items-center justify-center">
 				<div className="bg-white shadow-lg rounded-lg p-6 w-80 md:w-180">
-					<div className="text-xl font-semibold mb-4">
-						{/* Getting the props from Body component Link tag: state Update User  */}
-						({location.state.name})
-					</div>
+					<div className="text-xl font-semibold mb-4">Update Details</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="name">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
 							Name:
 						</label>
 						<input
@@ -61,9 +61,7 @@ const UpdateUser = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="email">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
 							Email:
 						</label>
 						<input
@@ -76,16 +74,14 @@ const UpdateUser = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="phone">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
 							Phone:
 						</label>
 						<input
 							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 							value={phone}
 							onChange={(e) => setPhone(e.target.value)}
-							type="tel"
+							type="number"
 							placeholder="(123) 456-7890"
 							required
 						/>
@@ -93,7 +89,8 @@ const UpdateUser = () => {
 					<div className="flex justify-center">
 						<button
 							className="bg-yellow-700 hover:bg-yellow-900 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-							type="submit">
+							type="submit"
+						>
 							Update User
 						</button>
 					</div>

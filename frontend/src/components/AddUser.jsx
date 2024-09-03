@@ -12,25 +12,12 @@ const AddUser = () => {
 	const handleAddUser = async (e) => {
 		e.preventDefault();
 		try {
-			const response = await axios.post(
-				"/api/add-user",
-				{
-					name,
-					email,
-					phone,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-					},
-					withCredentials: true,
-				}
-			);
-
+			const response = await axios.post("/api/v1/add-user",{name, email, phone});
 			toast.success(response.data.message);
 			navigation("/");
 		} catch (error) {
-			toast.error(response.data.error.message);
+			console.log(error);
+			toast.error(error.response.data.message);
 		}
 	};
 
@@ -40,9 +27,7 @@ const AddUser = () => {
 				<div className="bg-white shadow-lg rounded-lg p-6 w-80 ">
 					<div className="text-xl font-semibold mb-4">Add User</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="name">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
 							Name:
 						</label>
 						<input
@@ -55,9 +40,7 @@ const AddUser = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="email">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
 							Email:
 						</label>
 						<input
@@ -70,16 +53,14 @@ const AddUser = () => {
 						/>
 					</div>
 					<div className="mb-4">
-						<label
-							className="block text-gray-700 text-sm font-bold mb-2"
-							htmlFor="phone">
+						<label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
 							Phone:
 						</label>
 						<input
 							className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
 							value={phone}
 							onChange={(e) => setPhone(e.target.value)}
-							type="tel"
+							type="number"
 							placeholder="(123) 456-7890"
 							required
 						/>
@@ -87,7 +68,8 @@ const AddUser = () => {
 					<div className="flex justify-center">
 						<button
 							className="bg-blue-900 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-							type="submit">
+							type="submit"
+						>
 							Add User
 						</button>
 					</div>

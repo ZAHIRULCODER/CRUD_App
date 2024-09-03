@@ -5,7 +5,6 @@ import Footer from "./components/Footer";
 import Body from "./components/Body";
 import AddUser from "./components/AddUser";
 import UpdateUser from "./components/UpdateUser";
-import { Toaster } from "react-hot-toast";
 
 const App = () => {
 	return (
@@ -13,7 +12,6 @@ const App = () => {
 			<Navbar />
 			<Body />
 			<Footer />
-			<Toaster />
 		</div>
 	);
 };

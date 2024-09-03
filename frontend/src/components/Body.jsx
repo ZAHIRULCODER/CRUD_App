@@ -9,9 +9,8 @@ const Body = () => {
 	useEffect(() => {
 		(async () => {
 			try {
-				const response = await axios.get("/api/all-users");
+				const response = await axios.get("/api/v1/all-users");
 
-				//optional chaining
 				setAllUsers(response?.data?.users);
 			} catch (error) {
 				toast.error(response.data.error.message);
@@ -21,14 +20,13 @@ const Body = () => {
 
 	const handleDeleteUser = async (id) => {
 		try {
-			const response = await axios.delete(`/api/delete-user/${id}`, {
-				withCredentials: true,
-			});
+			const response = await axios.delete(`/api/v1/delete-user/${id}`);
 
 			setAllUsers((prevUser) => prevUser.filter((user) => user._id !== id));
 			toast.success(response.data.message);
 		} catch (error) {
-			toast.error(response.data.error.message);
+			console.log(error);
+			toast.error(error.response.data.message);
 		}
 	};
 
@@ -50,30 +48,21 @@ const Body = () => {
 							<tbody>
 								{allUsers.map((user, index) => (
 									<tr key={user._id}>
-										<td className="border px-4 py-2 text-center">
-											{index + 1}
-										</td>
-										<td className="border px-4 py-2 text-center">
-											{user.name}
-										</td>
-										<td className="border px-4 py-2 text-center">
-											{user.email}
-										</td>
-										<td className="border px-4 py-2 text-center">
-											{user.phone}
-										</td>
+										<td className="border px-4 py-2 text-center">{index + 1}</td>
+										<td className="border px-4 py-2 text-center">{user.name}</td>
+										<td className="border px-4 py-2 text-center">{user.email}</td>
+										<td className="border px-4 py-2 text-center">{user.phone}</td>
 										<td className="border px-4 py-2 text-center">
 											<button className="bg-yellow-700 hover:bg-yellow-900 text-white font-bold py-1 px-2 rounded mr-1">
-												<Link
-													to={`/update-user/${user._id}`}
-													state={{ name: user.name }}>
+												<Link to={`/update-user/${user._id}`} state={{ name: user.name }}>
 													{/* passing props in Link tag and consume it using useLocation */}
 													Update
 												</Link>
 											</button>
 											<button
 												onClick={() => handleDeleteUser(user._id)} // pass the id to the function above
-												className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-center">
+												className="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-2 rounded text-center"
+											>
 												Delete
 											</button>
 										</td>

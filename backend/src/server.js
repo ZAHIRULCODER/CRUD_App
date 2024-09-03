@@ -1,8 +1,8 @@
 import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import { connectDB } from "./src/config/database.js";
-import crudRoutes from "./src/routes/crudRoutes.js";
+import { connectDB } from "./config/database.js";
+import crudRoutes from "./routes/crudRoutes.js";
 
 const app = express();
 dotenv.config();
@@ -26,7 +26,7 @@ app.use(
 app.use(express.json());
 
 
-app.use("/api", crudRoutes);
+app.use("/api/v1", crudRoutes);
 
 app.get("/", (req, res) => {
 	res.send("Welcome to the server (This is for testing only)");
